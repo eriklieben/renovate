@@ -1,0 +1,148 @@
+{
+  "description": "Base Renovate configuration with shared settings for all projects",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    "group:monorepos",
+    "group:recommended",
+    "workarounds:all"
+  ],
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Dependency Dashboard",
+  "dependencyDashboardLabels": ["dependencies"],
+  "timezone": "Europe/Amsterdam",
+  "prCreation": "immediate",
+  "rebaseWhen": "conflicted",
+  "prNotPendingHours": 24,
+  "prConcurrentLimit": 3,
+  "prHourlyLimit": 2,
+  "semanticCommits": "enabled",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{newVersion}}",
+  "commitMessageSuffix": "",
+  "prTitle": "{{semanticPrefix}}{{#if isPin}}Pin{{else}}Update{{/if}} dependency {{depName}} {{#if isPinDigest}}digest{{else}}{{#if isMajor}}to v{{newMajor}}{{else}}{{#if isRange}}to {{newValue}}{{else}}to {{newVersion}}{{/if}}{{/if}}{{/if}}",
+  "prBodyTemplate": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "vulnerabilityAlerts": {
+    "enabled": true
+  },
+  "osvVulnerabilityAlerts": true,
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "automerge": false,
+  "platformAutomerge": false,
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**"
+  ],
+  "packageRules": [
+    {
+      "description": "Automerge patch updates for stable packages after CI passes",
+      "matchUpdateTypes": ["patch"],
+      "matchPackagePatterns": [
+        "^Microsoft\\.Extensions\\.",
+        "^System\\.",
+        "^Newtonsoft\\.Json$",
+        "^Serilog"
+      ],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "description": "Group Entity Framework packages",
+      "matchPackagePatterns": [
+        "^Microsoft\\.EntityFrameworkCore",
+        "^EntityFramework"
+      ],
+      "groupName": "Entity Framework"
+    },
+    {
+      "description": "Group Azure SDK packages",
+      "matchPackagePatterns": [
+        "^Azure\\.",
+        "^Microsoft\\.Azure\\."
+      ],
+      "groupName": "Azure SDK"
+    },
+    {
+      "description": "Group .NET Aspire packages together",
+      "matchPackagePatterns": [
+        "^Aspire\\.",
+        "^Microsoft\\.Extensions\\.ServiceDiscovery",
+        "^Microsoft\\.Extensions\\.Resilience"
+      ],
+      "groupName": ".NET Aspire",
+      "prPriority": 6
+    },
+    {
+      "description": "Group Docker base images",
+      "matchManagers": ["dockerfile"],
+      "matchPackagePatterns": [
+        "mcr\\.microsoft\\.com/dotnet/",
+        "mcr\\.microsoft\\.com/azure-"
+      ],
+      "groupName": "Docker base images"
+    },
+    {
+      "description": "Group all test dependencies together with chore commits",
+      "matchFileNames": [
+        "**/test/**/*",
+        "**/tests/**/*",
+        "**/*test*",
+        "**/*Test*",
+        "**/*.test.*",
+        "**/*.Test.*"
+      ],
+      "groupName": "test dependencies",
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "test-deps",
+      "prPriority": 2
+    },
+    {
+      "description": "Group test framework packages by name patterns",
+      "matchPackagePatterns": [
+        "^xunit",
+        "^nunit", 
+        "^mstest",
+        "^moq",
+        "^fluentassertions",
+        "^shouldly",
+        "^bogus",
+        "^autofixture",
+        "^coverlet",
+        "^microsoft\\.testplatform",
+        "^microsoft.*\\.testing"
+      ],
+      "groupName": "test frameworks",
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "test-deps",
+      "prPriority": 2
+    },
+    {
+      "description": "Security updates get highest priority",
+      "matchUpdateTypes": ["patch"],
+      "matchCurrentVersion": "/.+-security$/",
+      "prPriority": 10
+    },
+    {
+      "description": "Group Microsoft packages together",
+      "matchManagers": ["nuget"],
+      "matchPackagePatterns": ["^Microsoft\\."],
+      "excludePackagePatterns": [
+        "^xunit",
+        "^nunit", 
+        "^mstest",
+        "^microsoft\\.testplatform",
+        "^microsoft.*\\.testing",
+        "^Aspire\\.",
+        "^Microsoft\\.Extensions\\.ServiceDiscovery",
+        "^Microsoft\\.Extensions\\.Resilience"
+      ],
+      "groupName": "Microsoft packages"
+    }
+  ]
+}

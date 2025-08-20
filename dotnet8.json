@@ -1,0 +1,59 @@
+{
+  "description": ".NET 8 LTS maintenance configuration - keeps dependencies updated while staying on .NET 8",
+  "extends": [
+    "local>ErikLieben.FA/renovate//base-dotnet.json"
+  ],
+  "packageRules": [
+    {
+      "description": "Keep .NET 8 framework - no major version updates to .NET 9",
+      "matchManagers": ["nuget"],
+      "matchPackageNames": [
+        "Microsoft.NETCore.App",
+        "Microsoft.AspNetCore.App",
+        "Microsoft.WindowsDesktop.App"
+      ],
+      "allowedVersions": "< 9.0.0",
+      "major": {
+        "enabled": false
+      }
+    },
+    {
+      "description": "Keep .NET 8 SDK and runtime references",
+      "matchManagers": ["nuget"],
+      "matchPackagePatterns": [
+        "^Microsoft\\.AspNetCore\\.",
+        "^Microsoft\\.Extensions\\.",
+        "^System\\."
+      ],
+      "allowedVersions": "< 9.0.0",
+      "major": {
+        "enabled": false
+      }
+    },
+    {
+      "description": "Update other NuGet packages normally within .NET 8 compatibility",
+      "matchManagers": ["nuget"],
+      "excludePackagePatterns": [
+        "^Microsoft\\.NETCore\\.",
+        "^Microsoft\\.AspNetCore\\.",
+        "^Microsoft\\.WindowsDesktop\\.",
+        "^Microsoft\\.Extensions\\.",
+        "^System\\."
+      ],
+      "rangeStrategy": "bump"
+    },
+    {
+      "description": "Docker base images - keep on .NET 8",
+      "matchManagers": ["dockerfile"],
+      "matchPackageNames": [
+        "mcr.microsoft.com/dotnet/aspnet",
+        "mcr.microsoft.com/dotnet/runtime",
+        "mcr.microsoft.com/dotnet/sdk"
+      ],
+      "allowedVersions": "/^8\\./",
+      "major": {
+        "enabled": false
+      }
+    }
+  ]
+}
