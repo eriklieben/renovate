@@ -1,7 +1,7 @@
 {
   "description": ".NET 8 LTS maintenance configuration - keeps dependencies updated while staying on .NET 8",
   "extends": [
-    "local>ErikLieben.FA/renovate//base-dotnet.json"
+    "github>eriklieben/renovate//base-dotnet.json"
   ],
   "packageRules": [
     {

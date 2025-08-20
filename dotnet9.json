@@ -1,7 +1,7 @@
 {
   "description": ".NET Latest configuration - keeps dependencies on the latest .NET version (currently .NET 9)",
   "extends": [
-    "local>ErikLieben.FA/renovate//base-dotnet.json"
+    "github>eriklieben/renovate//base-dotnet.json"
   ],
   "prConcurrentLimit": 5,
   "prHourlyLimit": 3,
