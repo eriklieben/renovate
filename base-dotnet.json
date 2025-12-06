@@ -2,14 +2,11 @@
   "description": "Base Renovate configuration with shared settings for all projects",
   "extends": [
     "config:recommended",
-    ":dependencyDashboard",
     "group:monorepos",
     "group:recommended",
     "workarounds:all"
   ],
-  "dependencyDashboard": true,
-  "dependencyDashboardTitle": "Dependency Dashboard",
-  "dependencyDashboardLabels": ["dependencies"],
+  "dependencyDashboard": false,
   "timezone": "Europe/Amsterdam",
   "prCreation": "immediate",
   "rebaseWhen": "conflicted",
