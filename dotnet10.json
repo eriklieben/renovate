@@ -1,0 +1,83 @@
+{
+  "description": ".NET 10 configuration - keeps dependencies on .NET 10 (LTS)",
+  "extends": [
+    "github>eriklieben/renovate//base-dotnet.json"
+  ],
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 3,
+  "packageRules": [
+    {
+      "description": "Prefer .NET 10 for framework packages",
+      "matchManagers": ["nuget"],
+      "matchPackageNames": [
+        "Microsoft.NETCore.App",
+        "Microsoft.AspNetCore.App",
+        "Microsoft.WindowsDesktop.App"
+      ],
+      "rangeStrategy": "bump",
+      "prPriority": 5
+    },
+    {
+      "description": "Update to latest .NET 10 compatible packages",
+      "matchManagers": ["nuget"],
+      "matchPackagePatterns": [
+        "^Microsoft\\.AspNetCore\\.",
+        "^Microsoft\\.Extensions\\.",
+        "^System\\."
+      ],
+      "rangeStrategy": "bump",
+      "allowedVersions": "/^10\\./"
+    },
+    {
+      "description": "Update all other NuGet packages to latest versions",
+      "matchManagers": ["nuget"],
+      "rangeStrategy": "bump"
+    },
+    {
+      "description": "Group Microsoft framework updates",
+      "matchManagers": ["nuget"],
+      "matchPackagePatterns": [
+        "^Microsoft\\.AspNetCore\\.",
+        "^Microsoft\\.Extensions\\.",
+        "^Microsoft\\.NETCore\\."
+      ],
+      "groupName": "Microsoft .NET 10 framework",
+      "prPriority": 8
+    },
+    {
+      "description": "Group other Microsoft packages",
+      "matchManagers": ["nuget"],
+      "matchPackagePatterns": ["^Microsoft\\."],
+      "excludePackagePatterns": [
+        "^Microsoft\\.AspNetCore\\.",
+        "^Microsoft\\.Extensions\\.",
+        "^Microsoft\\.NETCore\\."
+      ],
+      "groupName": "Microsoft packages"
+    },
+    {
+      "description": "Allow global.json to update to latest .NET 10 SDK",
+      "matchManagers": ["dotnet"],
+      "matchFileNames": ["global.json"],
+      "rangeStrategy": "bump",
+      "prPriority": 7
+    },
+    {
+      "description": "Docker images - prefer .NET 10",
+      "matchManagers": ["dockerfile"],
+      "matchPackageNames": [
+        "mcr.microsoft.com/dotnet/aspnet",
+        "mcr.microsoft.com/dotnet/runtime",
+        "mcr.microsoft.com/dotnet/sdk"
+      ],
+      "rangeStrategy": "bump"
+    },
+    {
+      "description": "Enable major version updates for staying current",
+      "matchManagers": ["nuget"],
+      "major": {
+        "enabled": true
+      }
+    }
+  ]
+}
